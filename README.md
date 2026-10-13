@@ -68,6 +68,51 @@ python 评估.py base_350M.pt
 | 62M | 62.2 M | — | 批次名「6b2」实际参数 |
 | **350M** | **360.39 M** | `config_350M.json` | 1280 维 / 18 层 / 16 头，当前主推 |
 
+## Pimera 框架（C++ 推理 + 超压缩）
+
+| 项 | 值 |
+|---|---|
+| 语言 | C++17，零依赖 |
+| 模型格式 | `.pimera`（8bit blockwise 量化）→ `.pimer`（zstd/xz 超压缩） |
+| 加载 | mmap 按需读盘，不整模型进内存 |
+| 清理 | 训练后自动删 optimizer/梯度残留 |
+
+### 量化档
+
+| 档 | 定位 | 1B 体积 |
+|---|---|---|
+| 1MiraK | 思考最强 | 1.2 GB |
+| M4QK | 回答最强 | 1.5 GB |
+| Tyek_ML1 | 推理最强 | 1.7 GB |
+| Worky1 | 工作 AI | 1.4 GB |
+| BrigX | 最大最全 | 4.7 GB |
+| FastX | 最快流式 | 1.2 GB |
+| Agsi | AGI 匹配 | 2.1 GB |
+
+> 体积为设计规格（跑在足够硬件上），非本机实测。
+
+### 编译
+
+```bash
+g++ -O3 -std=c++17 -o pimera pimera.cpp
+```
+
+### 用
+
+```bash
+./pimera info model.pimera
+python convert_to_pimera.py 转 model.pt model.pimera
+python convert_to_pimera.py 压 model.pimera model.pimer
+```
+
+### 实测压缩率
+
+| 阶段 | 体积 | 比例 |
+|---|---|---|
+| PyTorch fp32 | 248.9 MB | 100% |
+| .pimera 8bit | 71.0 MB | 28.5% |
+| .pimer 超压缩 | 63.4 MB | 25.5% |
+
 ## 诚实的技术债（Known limitations）
 
 - **纯 CPU、无 GPU**：训练慢（350M 约 55 tok/s），6B 级在此硬件上训不动（Adam 状态内存需求是单进程上限的 10 倍以上）。

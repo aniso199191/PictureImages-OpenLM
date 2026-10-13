@@ -1,0 +1,9 @@
+# 训练数据（token 流，体积大，用 Git LFS 或放 Release）
+*.bin
+*.pt
+*.jsonl
+
+# Python
+__pycache__/
+*.pyc
+.venv/

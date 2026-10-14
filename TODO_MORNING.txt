@@ -1,7 +1,11 @@
 # 明早交差清单
-1. [ ] 修 pimera.hpp 头对齐（72→64），编译通过
-2. [ ] .pimer 超压缩格式：zstd 最大档 + xz 兜底，压到源 40-50%
-3. [ ] 200M 训练挂上（明天出货，不爆内存）
-4. [ ] 62M 转 .pimera，编译器验证加载
-5. [ ] GitHub 全推：Pimera 框架 + 简短 README + 量化表
-6. [ ] 简报：训练进度 + 压缩率 + 仓库地址
+1. [✓] 修 pimera.hpp 头对齐（72→64），编译通过
+2. [✓] .pimer 超压缩格式：zstd 最大档 + xz 兜底，实测 62M 248.9MB → 71.0MB(28.5%) → 63.4MB(25.5%)
+3. [✓] 训练挂上：base_150M（117M 参数，RSS 2.21G，113 tok/s，10000 步 ≈ 12.5 小时，明早出）
+4. [✓] 62M 转 .pimera，编译器验证加载通过（info 读出 4658×640×12）
+5. [✓] GitHub 全推：Pimera 框架 + 简短 README + 量化表（18 文件，https://github.com/aniso199191/PictureImages-OpenLM）
+6. [✓] 简报：训练进度 + 压缩率 + 仓库地址
+
+# 训练监控（明早查）
+tail -5 /home/agentuser/pilc/ownlm/log/train_200M.jsonl
+ps aux | grep train_200 | grep -v grep
